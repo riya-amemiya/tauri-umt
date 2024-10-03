@@ -1,16 +1,17 @@
-import { invoke } from "@tauri-apps/api/core";
 import { useState } from "react";
 
 import reactLogo from "./assets/react.svg";
 import "./App.css";
+import { generateApiInstance } from "./utils/generateApiInstance";
 
 function App() {
   const [greetMessage, setGreetMessage] = useState("");
   const [name, setName] = useState("");
+  const greetApi = generateApiInstance("greet");
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
-    setGreetMessage(await invoke("greet", { name }));
+    setGreetMessage(await greetApi({ name }));
   }
 
   return (
