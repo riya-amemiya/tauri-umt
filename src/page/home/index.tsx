@@ -1,11 +1,11 @@
 import { useState } from "react";
 
-import { generateApiInstance } from "@/utils/generateApiInstance";
+import { generateAppApiInstance } from "@/utils/generateAppApiInstance";
 
 export function Home() {
   const [greetMessage, setGreetMessage] = useState("");
   const [name, setName] = useState("");
-  const greetApi = generateApiInstance("greet");
+  const greetApi = generateAppApiInstance("greet");
 
   async function greet() {
     setGreetMessage(await greetApi({ name }));
@@ -29,6 +29,7 @@ export function Home() {
       </form>
 
       <p>{greetMessage}</p>
+      <p>{window.toString()}</p>
     </div>
   );
 }
