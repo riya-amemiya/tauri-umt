@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { Effect } from "effect";
+import { useCallback, useMemo, useState } from "react";
 
 import reactLogo from "@/assets/react.svg";
 import { generateApiInstance } from "@/utils/generateApiInstance";
-import "@/style/tailwind.css";
+// import "@/style/tailwind.css";
 import "the-new-css-reset/css/reset.css";
 import "@/App.scss";
 
@@ -10,6 +11,14 @@ export function App() {
   const [greetMessage, setGreetMessage] = useState("");
   const [name, setName] = useState("");
   const greetApi = generateApiInstance("greet");
+  const [count, setCount] = useState(0);
+  // Effect<void>
+  // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+  const task = useMemo(
+    () => Effect.sync(() => setCount((current) => current + 1)),
+    [setCount],
+  );
+  const increment = useCallback(() => Effect.runSync(task), [task]);
 
   async function greet() {
     // Learn more about Tauri commands at https://tauri.app/v1/guides/features/command
@@ -48,6 +57,10 @@ export function App() {
         />
         <button type="submit">Greet</button>
       </form>
+
+      <button type="button" onClick={increment}>
+        count is {count}
+      </button>
 
       <p>{greetMessage}</p>
     </div>
