@@ -4,7 +4,8 @@
 		"ignore": [
 			"node_modules",
 			"src-tauri",
-			"dist"
+			"dist",
+			"vite-env.d.ts"
 		]
 	},
 	"formatter": {
