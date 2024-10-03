@@ -5,7 +5,7 @@ import reactLogo from "@/assets/react.svg";
 import { Button } from "@/components/ui/button";
 import { generateApiInstance } from "@/utils/generateApiInstance";
 
-import "@/App.scss";
+import "@/page/home/index.scss";
 
 export function Home() {
   const [greetMessage, setGreetMessage] = useState("");
