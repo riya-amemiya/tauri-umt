@@ -4,7 +4,7 @@ import reactLogo from "@/assets/react.svg";
 import { generateApiInstance } from "@/utils/generateApiInstance";
 import "@/style/tailwind.css";
 import "the-new-css-reset/css/reset.css";
-import "@/App.css";
+import "@/App.scss";
 
 export function App() {
   const [greetMessage, setGreetMessage] = useState("");
