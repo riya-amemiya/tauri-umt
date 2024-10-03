@@ -4,7 +4,7 @@ import reactLogo from "@/assets/react.svg";
 import { generateApiInstance } from "@/utils/generateApiInstance";
 import "@/App.css";
 
-function App() {
+export function App() {
   const [greetMessage, setGreetMessage] = useState("");
   const [name, setName] = useState("");
   const greetApi = generateApiInstance("greet");
@@ -51,6 +51,3 @@ function App() {
     </div>
   );
 }
-
-// biome-ignore lint/style/noDefaultExport: <explanation>
-export default App;
