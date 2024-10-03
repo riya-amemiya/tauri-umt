@@ -37,7 +37,8 @@
 		"ignore": [
 			"vite.config.ts",
 			"eslint.config.mjs",
-			"tailwind.config.js"
+			"tailwind.config.js",
+			"postcss.config.js"
 		],
 		"rules": {
 			"a11y": {

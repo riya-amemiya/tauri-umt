@@ -10,8 +10,9 @@
     "tauri": "tauri",
     "eslint": "eslint src",
     "format": "biome format . --write",
-    "lint": "yarn eslint --fix && biome check . --write && tsc",
-    "lint:ci": "yarn eslint && biome ci . && tsc"
+    "lint": " yarn eslint --fix && biome check . --write && yarn markuplint && tsc",
+    "lint:ci": "yarn eslint && biome ci . && yarn markuplint && tsc",
+    "markuplint": "markuplint \"./src/**/*.{jsx,tsx}\""
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -37,6 +38,8 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.3",
+    "@markuplint/jsx-parser": "^4.7.7",
+    "@markuplint/react-spec": "^4.5.7",
     "@tauri-apps/cli": ">=2.0.0",
     "@types/react": "^18.2.15",
     "@types/react-dom": "^18.2.7",
@@ -47,6 +50,7 @@
     "eslint": "^9.10.0",
     "eslint-plugin-import": "^2.30.0",
     "eslint-plugin-unicorn": "^55.0.0",
+    "markuplint": "^4.9.4",
     "openapi-typescript": "^7.4.1",
     "postcss": "^8.4.47",
     "sass-embedded": "^1.79.4",
