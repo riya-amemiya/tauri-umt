@@ -6,7 +6,7 @@ import {
 
 import type { API_ENDPOINTS, ApiInstance } from "$/apis";
 
-export const generateApiInstance = (apiName: API_ENDPOINTS) => {
+export const generateApiInstance = <T extends API_ENDPOINTS>(apiName: T) => {
   return async (
     payload: ApiInstance[typeof apiName]["payload"],
     options?: InvokeOptions,
