@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import { isApp } from "@/lib/isApp";
 import { generateAppApiInstance } from "@/utils/generateAppApiInstance";
 
 export function Home() {
@@ -8,7 +9,11 @@ export function Home() {
   const greetApi = generateAppApiInstance("greet");
 
   async function greet() {
-    setGreetMessage(await greetApi({ name }));
+    if (isApp) {
+      setGreetMessage(await greetApi({ name }));
+    } else {
+      setGreetMessage("Not running in Tauri.");
+    }
   }
 
   return (
@@ -29,7 +34,6 @@ export function Home() {
       </form>
 
       <p>{greetMessage}</p>
-      <p>{window.toString()}</p>
     </div>
   );
 }
