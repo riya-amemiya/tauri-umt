@@ -17,6 +17,7 @@ export default [
       "cjs.build.mjs",
       "eslint.config.mjs",
       "src/vite-env.d.ts",
+      "vite.config.ts"
     ],
   },
   js.configs.recommended,

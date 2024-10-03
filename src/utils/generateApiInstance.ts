@@ -4,7 +4,7 @@ import {
   type InvokeOptions,
 } from "@tauri-apps/api/core";
 
-import type { API_ENDPOINTS, ApiInstance } from "../types/apis";
+import type { API_ENDPOINTS, ApiInstance } from "$/apis";
 
 export const generateApiInstance = (apiName: API_ENDPOINTS) => {
   return async (

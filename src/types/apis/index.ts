@@ -1,4 +1,4 @@
-import type { GreetApi } from "./greetTypes";
+import type { GreetApi } from "$/apis/greetTypes";
 
 export type API_ENDPOINTS = "greet";
 

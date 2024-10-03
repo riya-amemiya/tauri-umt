@@ -1,8 +1,8 @@
 import { useState } from "react";
 
-import reactLogo from "./assets/react.svg";
-import "./App.css";
-import { generateApiInstance } from "./utils/generateApiInstance";
+import reactLogo from "@/assets/react.svg";
+import { generateApiInstance } from "@/utils/generateApiInstance";
+import "@/App.css";
 
 function App() {
   const [greetMessage, setGreetMessage] = useState("");
