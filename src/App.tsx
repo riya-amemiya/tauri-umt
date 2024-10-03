@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import reactLogo from "@/assets/react.svg";
 import { generateApiInstance } from "@/utils/generateApiInstance";
+import "@/style/tailwind.css";
+import "the-new-css-reset/css/reset.css";
 import "@/App.css";
 
 export function App() {
@@ -16,7 +18,7 @@ export function App() {
 
   return (
     <div className="container">
-      <h1>Welcome to Tauri!</h1>
+      <h1 className="w-10">Welcome to Tauri!</h1>
 
       <div className="row">
         <a href="https://vitejs.dev" target="_blank" rel="noreferrer">

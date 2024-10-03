@@ -36,7 +36,8 @@
 		"enabled": true,
 		"ignore": [
 			"vite.config.ts",
-			"eslint.config.mjs"
+			"eslint.config.mjs",
+			"tailwind.config.js"
 		],
 		"rules": {
 			"a11y": {
