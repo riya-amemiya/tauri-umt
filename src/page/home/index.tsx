@@ -2,12 +2,12 @@ import { Effect } from "effect";
 import { useCallback, useMemo, useState } from "react";
 
 import reactLogo from "@/assets/react.svg";
+import { Button } from "@/components/ui/button";
 import { generateApiInstance } from "@/utils/generateApiInstance";
-// import "@/style/tailwind.css";
-import "the-new-css-reset/css/reset.css";
+
 import "@/App.scss";
 
-export function App() {
+export function Home() {
   const [greetMessage, setGreetMessage] = useState("");
   const [name, setName] = useState("");
   const greetApi = generateApiInstance("greet");
@@ -58,9 +58,9 @@ export function App() {
         <button type="submit">Greet</button>
       </form>
 
-      <button type="button" onClick={increment}>
+      <Button type="button" onClick={increment}>
         count is {count}
-      </button>
+      </Button>
 
       <p>{greetMessage}</p>
     </div>
