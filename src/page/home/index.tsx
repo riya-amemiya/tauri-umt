@@ -28,7 +28,7 @@ export function Home() {
   const greetApi = generateAppApiInstance("greet");
 
   async function greet(userName: string) {
-    if (isApp) {
+    if (isApp()) {
       setGreetMessage(await greetApi({ name: userName }));
     } else {
       setGreetMessage("Not running in Tauri.");
