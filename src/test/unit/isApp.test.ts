@@ -1,6 +1,6 @@
 // isApp.test.ts
 
-import { isApp } from "@/lib/isApp";
+import { isApp } from "@/utils/isApp";
 
 describe("isApp", () => {
   it('should return true if userAgent includes "TauriApp"', () => {

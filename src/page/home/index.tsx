@@ -14,8 +14,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { isApp } from "@/lib/isApp";
 import { generateAppApiInstance } from "@/utils/generateAppApiInstance";
+import { isApp } from "@/utils/isApp";
 
 const formSchema = z.object({
   userName: z.string().min(2, {

@@ -12,6 +12,7 @@ export default [
     ignores: [
       "jest.config.ts",
       "tmp/",
+      "coverage/",
       "src/tests/",
       ".dependency-cruiser.js",
       "cjs.build.mjs",
@@ -20,7 +21,7 @@ export default [
       "vite.config.mts",
       "tailwind.config.js",
       "postcss.config.js",
-      "playwright.config.ts"
+      "playwright.config.ts",
     ],
   },
   js.configs.recommended,
