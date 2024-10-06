@@ -1,0 +1,111 @@
+# アクション名
+name: Build and Test
+
+# タイミングを指定
+on:
+    pull_request:
+        branches:
+            - main
+    push:
+        branches:
+            - main
+    workflow_dispatch:
+
+jobs:
+    setup:
+        name: JavaScript Check on Ubuntu
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                bun-version: [latest]
+                os: [ubuntu-latest]
+        steps:
+            - uses: actions/checkout@v4
+            - name: Use Bun ${{ matrix.bun-version }}
+              uses: oven-sh/setup-bun@v1
+              with:
+                  bun-version: ${{ matrix.bun-version }}
+            - name: Cache Restore devDependencies
+              id: cache-restore-dev-depends
+              uses: actions/cache/restore@v3
+              with:
+                  path: '**/node_modules'
+                  key: dev-depends-${{ matrix.os }}-bun${{ matrix.bun-version }}-${{ hashFiles('package.json') }}
+            - name: Install dependencies
+              if: steps.cache-restore-dev-depends.outputs.cache-hit != 'true'
+              run: bun i
+            - name: Cache Save devDependencies
+              if: steps.cache-restore-dev-depends.outputs.cache-hit != 'true'
+              id: cache-save-dev-depends
+              uses: actions/cache/save@v3
+              with:
+                  path: '**/node_modules'
+                  key: dev-depends-${{ matrix.os }}-bun${{ matrix.bun-version }}-${{ hashFiles('package.json') }}
+    lint:
+        name: JavaScript Lint on Ubuntu
+        needs: setup
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                bun-version: [latest]
+                os: [ubuntu-latest]
+        steps:
+            - uses: actions/checkout@v4
+            - name: Use Bun ${{ matrix.bun-version }}
+              uses: oven-sh/setup-bun@v1
+              with:
+                  bun-version: ${{ matrix.bun-version }}
+            - name: Cache Restore devDependencies
+              id: cache-restore-dev-depends
+              uses: actions/cache/restore@v3
+              with:
+                  path: '**/node_modules'
+                  key: dev-depends-${{ matrix.os }}-bun${{ matrix.bun-version }}-${{ hashFiles('package.json') }}
+            - name: Lint
+              run: bun run lint:ci
+    test:
+        name: JavaScript Test on Ubuntu
+        needs: setup
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                bun-version: [latest]
+                os: [ubuntu-latest]
+        steps:
+            - uses: actions/checkout@v4
+            - name: Use Bun ${{ matrix.bun-version }}
+              uses: oven-sh/setup-bun@v1
+              with:
+                  bun-version: ${{ matrix.bun-version }}
+            - name: Cache Restore devDependencies
+              id: cache-restore-dev-depends
+              uses: actions/cache/restore@v3
+              with:
+                  path: '**/node_modules'
+                  key: dev-depends-${{ matrix.os }}-bun${{ matrix.bun-version }}-${{ hashFiles('package.json') }}
+            - name: Install Playwright Browsers
+              run: npx playwright install --with-deps
+            - name: Test
+              run: bun run test:web
+    build:
+          name: JavaScript Build on Ubuntu
+          needs: setup
+          runs-on: ${{ matrix.os }}
+          strategy:
+              matrix:
+                  bun-version: [latest]
+                  os: [ubuntu-latest]
+          steps:
+            - uses: actions/checkout@v4
+            - name: Use Bun ${{ matrix.bun-version }}
+              uses: oven-sh/setup-bun@v1
+              with:
+                  bun-version: ${{ matrix.bun-version }}
+            - name: Cache Restore devDependencies
+              id: cache-restore-dev-depends
+              uses: actions/cache/restore@v3
+              with:
+                  path: '**/node_modules'
+                  key: dev-depends-${{ matrix.os }}-bun${{ matrix.bun-version }}-${{ hashFiles('package.json') }}
+            - name: Build
+              run: bun run build

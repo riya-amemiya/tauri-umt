@@ -37,7 +37,7 @@ export default defineConfig({
     ],
     coverage: {
       provider: "v8",
-      include: ["src/**"],
+      include: ["src/utils/**"],
     },
     browser: {
       enabled: true,
