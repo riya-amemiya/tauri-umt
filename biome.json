@@ -35,7 +35,7 @@
 	"linter": {
 		"enabled": true,
 		"ignore": [
-			"vite.config.ts",
+			"vite.config.mts",
 			"eslint.config.mjs",
 			"tailwind.config.js",
 			"postcss.config.js"
