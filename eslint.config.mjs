@@ -20,6 +20,7 @@ export default [
       "vite.config.mts",
       "tailwind.config.js",
       "postcss.config.js",
+      "playwright.config.ts"
     ],
   },
   js.configs.recommended,

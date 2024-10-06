@@ -13,7 +13,7 @@
     "lint": " yarn eslint --fix && biome check . --write && yarn markuplint && tsc",
     "lint:ci": "yarn eslint && biome ci . && yarn markuplint && tsc",
     "markuplint": "markuplint \"./src/**/*.{jsx,tsx}\"",
-    "test:web": "vitest"
+    "test:web": "vitest && playwright test"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -42,7 +42,9 @@
     "@biomejs/biome": "1.9.3",
     "@markuplint/jsx-parser": "^4.7.7",
     "@markuplint/react-spec": "^4.5.7",
+    "@playwright/test": "^1.47.2",
     "@tauri-apps/cli": "^2.0.1",
+    "@types/node": "^22.7.4",
     "@types/react": "^18.3.11",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^8.8.0",

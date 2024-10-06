@@ -38,7 +38,8 @@
 			"vite.config.mts",
 			"eslint.config.mjs",
 			"tailwind.config.js",
-			"postcss.config.js"
+			"postcss.config.js",
+			"playwright.config.ts"
 		],
 		"rules": {
 			"a11y": {
