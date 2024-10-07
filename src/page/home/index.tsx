@@ -55,27 +55,29 @@ export function Home() {
             name="userName"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Username</FormLabel>
+                <FormLabel data-testid="username-label">Username</FormLabel>
                 <FormControl>
                   <Input
                     placeholder="shadcn"
                     autoComplete="off"
+                    data-testid="username-input"
                     {...field}
-                    data-testid="username"
                   />
                 </FormControl>
-                <FormDescription>
+                <FormDescription data-testid="username-description">
                   This is your public display name.
                 </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit">Greet</Button>
+          <Button type="submit" data-testid="greet-button">
+            Greet
+          </Button>
         </form>
       </Form>
 
-      <p>{greetMessage}</p>
+      <p data-testid="greet-message">{greetMessage}</p>
     </div>
   );
 }
