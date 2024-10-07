@@ -57,7 +57,12 @@ export function Home() {
               <FormItem>
                 <FormLabel>Username</FormLabel>
                 <FormControl>
-                  <Input placeholder="shadcn" autoComplete="off" {...field} />
+                  <Input
+                    placeholder="shadcn"
+                    autoComplete="off"
+                    {...field}
+                    data-testid="username"
+                  />
                 </FormControl>
                 <FormDescription>
                   This is your public display name.
