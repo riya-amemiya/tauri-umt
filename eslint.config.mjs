@@ -22,6 +22,8 @@ export default [
       "tailwind.config.js",
       "postcss.config.js",
       "playwright.config.ts",
+      ".storybook/",
+      "src/stories/**/*.stories.{ts,tsx}",
     ],
   },
   js.configs.recommended,

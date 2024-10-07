@@ -6,7 +6,10 @@
 			"src-tauri",
 			"dist",
 			"vite-env.d.ts",
-			"coverage"
+			"coverage",
+			".storybook",
+			"src/stories/**/*.stories.ts",
+			"src/stories/**/*.stories.tsx"
 		]
 	},
 	"formatter": {

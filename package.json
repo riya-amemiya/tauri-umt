@@ -13,7 +13,9 @@
     "lint": " yarn eslint --fix && biome check . --write && yarn markuplint && tsc",
     "lint:ci": "yarn eslint && biome ci . && yarn markuplint && tsc",
     "markuplint": "markuplint \"./src/**/*.{jsx,tsx}\"",
-    "test:web": "vitest --coverage && playwright test"
+    "test:web": "vitest --coverage && playwright test",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.9.0",
@@ -40,9 +42,18 @@
   },
   "devDependencies": {
     "@biomejs/biome": "1.9.3",
+    "@chromatic-com/storybook": "^1.9.0",
     "@markuplint/jsx-parser": "^4.7.7",
     "@markuplint/react-spec": "^4.5.7",
     "@playwright/test": "^1.47.2",
+    "@storybook/addon-essentials": "^8.3.5",
+    "@storybook/addon-interactions": "^8.3.5",
+    "@storybook/addon-links": "^8.3.5",
+    "@storybook/addon-onboarding": "^8.3.5",
+    "@storybook/blocks": "^8.3.5",
+    "@storybook/react": "^8.3.5",
+    "@storybook/react-vite": "^8.3.5",
+    "@storybook/test": "^8.3.5",
     "@tauri-apps/cli": "^2.0.1",
     "@types/node": "^22.7.4",
     "@types/react": "^18.3.11",
@@ -55,16 +66,23 @@
     "autoprefixer": "^10.4.20",
     "eslint": "^9.12.0",
     "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-storybook": "^0.9.0",
     "eslint-plugin-unicorn": "^55.0.0",
     "markuplint": "^4.9.4",
     "openapi-typescript": "^7.4.1",
     "playwright": "^1.47.2",
     "postcss": "^8.4.47",
     "sass-embedded": "^1.79.4",
+    "storybook": "^8.3.5",
     "tailwindcss": "^3.4.13",
     "typescript": "^5.6.2",
     "vite": "^5.4.8",
     "vite-tsconfig-paths": "^5.0.1",
     "vitest": "^2.1.2"
+  },
+  "eslintConfig": {
+    "extends": [
+      "plugin:storybook/recommended"
+    ]
   }
 }
