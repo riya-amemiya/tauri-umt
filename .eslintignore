@@ -1,0 +1,16 @@
+src/components/ui/
+next.config.js
+tailwind.config.js
+postcss.config.js
+jest.config.ts
+tmp/
+coverage
+src/tests
+.dependency-cruiser.js
+cjs.build.mjs
+eslint.config.mjs
+src/vite-env.d.ts
+vite.config.mts
+playwright.config.ts
+.storybook/
+src/stories/

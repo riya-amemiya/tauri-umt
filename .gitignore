@@ -29,3 +29,5 @@ coverage
 /playwright/.cache/
 
 *storybook.log
+.next
+out

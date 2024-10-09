@@ -9,7 +9,9 @@
 			"coverage",
 			".storybook",
 			"src/stories/**/*.stories.ts",
-			"src/stories/**/*.stories.tsx"
+			"src/stories/**/*.stories.tsx",
+			".next",
+			"out"
 		]
 	},
 	"formatter": {
@@ -83,7 +85,7 @@
 			},
 			"recommended": true,
 			"style": {
-				"noDefaultExport": "error",
+				"noDefaultExport": "off",
 				"noDoneCallback": "error",
 				"noImplicitBoolean": "warn",
 				"noNamespace": "error",

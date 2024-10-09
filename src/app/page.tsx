@@ -1,3 +1,5 @@
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -23,7 +25,7 @@ const formSchema = z.object({
   }),
 });
 
-export function Home() {
+export default function Home() {
   const [greetMessage, setGreetMessage] = useState("");
   const greetApi = generateAppApiInstance("greet");
 
@@ -58,9 +60,9 @@ export function Home() {
                 <FormLabel data-testid="username-label">Username</FormLabel>
                 <FormControl>
                   <Input
-                    placeholder="shadcn"
                     autoComplete="off"
                     data-testid="username-input"
+                    placeholder="shadcn"
                     {...field}
                   />
                 </FormControl>
@@ -71,7 +73,7 @@ export function Home() {
               </FormItem>
             )}
           />
-          <Button type="submit" data-testid="greet-button">
+          <Button data-testid="greet-button" type="submit">
             Greet
           </Button>
         </form>
