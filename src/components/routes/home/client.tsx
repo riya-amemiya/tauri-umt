@@ -86,7 +86,7 @@ export const HomeClientPage = () => {
       </Form>
 
       <p data-testid="greet-message">{greetMessage}</p>
-      <p data-testid="rocket-api-uuid">
+      <p data-testid="rocket-api-uuid-v4">
         {isLoading ? "Loading..." : (data?.message ?? "")}
       </p>
     </div>

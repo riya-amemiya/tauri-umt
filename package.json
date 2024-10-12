@@ -39,6 +39,7 @@
     "the-new-css-reset": "^1.11.3",
     "ts-pattern": "^5.4.0",
     "umt": "^1.9.0",
+    "uuid": "^11.0.0-0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
