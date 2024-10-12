@@ -71,6 +71,7 @@ jobs:
             matrix:
                 bun-version: [latest]
                 os: [ubuntu-latest]
+                browser: [chromium, firefox, webkit, mobileChrome, mobileSafari]
         steps:
             - uses: actions/checkout@v4
             - uses: actions/checkout@v4
@@ -97,9 +98,9 @@ jobs:
                   path: '**/node_modules'
                   key: dev-depends-${{ matrix.os }}-bun${{ matrix.bun-version }}-${{ hashFiles('package.json') }}
             - name: Install Playwright Browsers
-              run: npx playwright install --with-deps
+              run: npx playwright install --with-deps ${{ matrix.browser }}
             - name: Test
-              run: bun run test:web
+              run: bun run test:web --project=${{ matrix.browser }}
     build:
           name: JavaScript Build on Ubuntu
           needs: setup
