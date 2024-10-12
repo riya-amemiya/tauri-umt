@@ -142,7 +142,7 @@ jobs:
             - name: Install Playwright Browsers
               run: |
                 if [[ "${{ matrix.browser }}" == "mobileChrome" ]]; then
-                  browser_to_install="chrome"
+                  browser_to_install="chromium"
                 elif [[ "${{ matrix.browser }}" == "mobileSafari" ]]; then
                   browser_to_install="webkit"
                 else
