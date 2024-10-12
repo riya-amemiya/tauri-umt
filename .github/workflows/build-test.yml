@@ -63,7 +63,46 @@ jobs:
                   key: dev-depends-${{ matrix.os }}-bun${{ matrix.bun-version }}-${{ hashFiles('package.json') }}
             - name: Lint
               run: bun run lint:ci
-    test:
+    test-unit:
+        name: JavaScript Test on Ubuntu
+        needs: setup
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                bun-version: [latest]
+                os: [ubuntu-latest]
+                browser: [chromium]
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/checkout@v4
+              with:
+                repository: riya-amemiya/rocket-study
+                path: rocket-study
+            - name: Update Rust
+              run: |
+                rustup update stable
+                rustup default stable
+            - name: Run Rocket
+              run: |
+                cd rocket-study
+                cargo run &
+                cd ..
+            - name: Use Bun ${{ matrix.bun-version }}
+              uses: oven-sh/setup-bun@v1
+              with:
+                  bun-version: ${{ matrix.bun-version }}
+            - name: Cache Restore devDependencies
+              id: cache-restore-dev-depends
+              uses: actions/cache/restore@v3
+              with:
+                  path: '**/node_modules'
+                  key: dev-depends-${{ matrix.os }}-bun${{ matrix.bun-version }}-${{ hashFiles('package.json') }}
+            - name: Install Playwright Browsers
+              run: |
+                npx playwright install --with-deps ${{ matrix.browser }}
+            - name: Test
+              run: bun run test:unit
+    test-e2e:
         name: JavaScript Test on Ubuntu
         needs: setup
         runs-on: ${{ matrix.os }}
@@ -108,7 +147,7 @@ jobs:
                 fi
                 npx playwright install --with-deps $browser_to_install
             - name: Test
-              run: bun run test:web --project=${{ matrix.browser }}
+              run: bun run test:e2e --project=${{ matrix.browser }}
     build:
           name: JavaScript Build on Ubuntu
           needs: setup

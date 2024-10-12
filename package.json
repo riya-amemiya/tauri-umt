@@ -13,7 +13,8 @@
     "lint": " next lint --fix && biome check . --write && yarn markuplint",
     "lint:ci": "next lint && biome ci . && yarn markuplint",
     "markuplint": "markuplint \"./src/**/*.{jsx,tsx}\"",
-    "test:web": "vitest --coverage && playwright test",
+    "test:web": "yarn test:unit && yarn test:e2e",
+    "test:unit": "vitest --coverage",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build"
   },
