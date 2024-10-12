@@ -1,4 +1,5 @@
 import { test, expect } from "@playwright/test";
+import { version as uuidVersion } from "uuid";
 
 import { getScreenshotPath } from "../utils/getScreenshotPath";
 
@@ -43,4 +44,12 @@ test("typing in the input and clicking the greet button", async ({ page }) => {
   const greetMessage = page.getByTestId("greet-message");
 
   expect(await greetMessage.textContent()).toBe("Not running in Tauri.");
+});
+
+test("uuid v4", async ({ page }) => {
+  await page.goto("http://localhost:9000");
+  await page.waitForTimeout(3000);
+  const rocketApiUuidV4 = page.getByTestId("rocket-api-uuid-v4");
+  const rocketApiUuidV4Text = await rocketApiUuidV4.textContent();
+  expect(uuidVersion(rocketApiUuidV4Text || "")).toBe(4);
 });
