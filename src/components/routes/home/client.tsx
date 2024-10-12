@@ -18,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { generateAppApiInstance } from "@/utils/generateAppApiInstance";
 import { isApp } from "@/utils/isApp";
+import { rocketApiQueryClient } from "@/utils/rocketApiClient";
 
 const formSchema = z.object({
   userName: z.string().min(2, {
@@ -27,6 +28,10 @@ const formSchema = z.object({
 
 export const HomeClientPage = () => {
   const [greetMessage, setGreetMessage] = useState("");
+  const { data, isLoading } = rocketApiQueryClient.useQuery(
+    "get",
+    "/getUuidV4",
+  );
   const greetApi = generateAppApiInstance("greet");
 
   async function greet(userName: string) {
@@ -81,6 +86,9 @@ export const HomeClientPage = () => {
       </Form>
 
       <p data-testid="greet-message">{greetMessage}</p>
+      <p data-testid="rocket-api-uuid">
+        {isLoading ? "Loading..." : (data?.message ?? "")}
+      </p>
     </div>
   );
 };
