@@ -98,7 +98,15 @@ jobs:
                   path: '**/node_modules'
                   key: dev-depends-${{ matrix.os }}-bun${{ matrix.bun-version }}-${{ hashFiles('package.json') }}
             - name: Install Playwright Browsers
-              run: npx playwright install --with-deps ${{ matrix.browser }}
+              run: |
+                if [[ "${{ matrix.browser }}" == "mobileChrome" ]]; then
+                  browser_to_install="chrome"
+                elif [[ "${{ matrix.browser }}" == "mobileSafari" ]]; then
+                  browser_to_install="webkit"
+                else
+                  browser_to_install="${{ matrix.browser }}"
+                fi
+                npx playwright install --with-deps $browser_to_install
             - name: Test
               run: bun run test:web --project=${{ matrix.browser }}
     build:
