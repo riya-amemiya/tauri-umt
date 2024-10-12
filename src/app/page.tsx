@@ -69,7 +69,7 @@ export default function Home() {
                 <FormDescription data-testid="username-description">
                   This is your public display name.
                 </FormDescription>
-                <FormMessage />
+                <FormMessage data-testid="username-error" />
               </FormItem>
             )}
           />
