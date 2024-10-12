@@ -1,9 +1,6 @@
 import "the-new-css-reset/css/reset.css";
 import "@/style/tailwind.css";
-// import { QueryClientProvider } from "@tanstack/react-query";
 import type { ReactNode } from "react";
-
-// import { rocketApiClient } from "@/utils/rocketApiClient";
 
 export const metadata = {
   title: "UMT",
@@ -17,11 +14,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="ja">
-      <body>
-        {/* <QueryClientProvider client={rocketApiClient}> */}
-        {children}
-        {/* </QueryClientProvider> */}
-      </body>
+      <body>{children}</body>
     </html>
   );
 }
