@@ -11,6 +11,9 @@ on:
             - main
     workflow_dispatch:
 
+concurrency:
+    group: ${{ github.workflow }}-${{ github.ref }}
+
 jobs:
     setup:
         name: JavaScript Check on Ubuntu
@@ -63,14 +66,15 @@ jobs:
                   key: dev-depends-${{ matrix.os }}-bun${{ matrix.bun-version }}-${{ hashFiles('package.json') }}
             - name: Lint
               run: bun run lint:ci
-    test:
-        name: JavaScript Test on Ubuntu
+    test-unit:
+        name: JavaScript Unit Test on ${{ matrix.os }} ${{ matrix.browser }} ${{ matrix.bun-version }}
         needs: setup
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
                 bun-version: [latest]
                 os: [ubuntu-latest]
+                browser: [chromium]
         steps:
             - uses: actions/checkout@v4
             - uses: actions/checkout@v4
@@ -97,9 +101,56 @@ jobs:
                   path: '**/node_modules'
                   key: dev-depends-${{ matrix.os }}-bun${{ matrix.bun-version }}-${{ hashFiles('package.json') }}
             - name: Install Playwright Browsers
-              run: npx playwright install --with-deps
+              run: |
+                npx playwright install --with-deps ${{ matrix.browser }}
             - name: Test
-              run: bun run test:web
+              run: bun run test:unit
+    test-e2e:
+        name: JavaScript E2E Test on ${{ matrix.os }} ${{ matrix.browser }} ${{ matrix.bun-version }}
+        needs: setup
+        runs-on: ${{ matrix.os }}
+        strategy:
+            matrix:
+                bun-version: [latest]
+                os: [ubuntu-latest]
+                browser: [chromium, firefox, webkit, mobileChrome, mobileSafari]
+        steps:
+            - uses: actions/checkout@v4
+            - uses: actions/checkout@v4
+              with:
+                repository: riya-amemiya/rocket-study
+                path: rocket-study
+            - name: Update Rust
+              run: |
+                rustup update stable
+                rustup default stable
+            - name: Run Rocket
+              run: |
+                cd rocket-study
+                cargo run &
+                cd ..
+            - name: Use Bun ${{ matrix.bun-version }}
+              uses: oven-sh/setup-bun@v1
+              with:
+                  bun-version: ${{ matrix.bun-version }}
+            - name: Cache Restore devDependencies
+              id: cache-restore-dev-depends
+              uses: actions/cache/restore@v3
+              with:
+                  path: '**/node_modules'
+                  key: dev-depends-${{ matrix.os }}-bun${{ matrix.bun-version }}-${{ hashFiles('package.json') }}
+            - name: Install Playwright Browsers
+              run: |
+                if [[ "${{ matrix.browser }}" == "mobileChrome" ]]; then
+                  browser_to_install="chromium"
+                elif [[ "${{ matrix.browser }}" == "mobileSafari" ]]; then
+                  browser_to_install="webkit"
+                else
+                  browser_to_install="${{ matrix.browser }}"
+                fi
+                npx playwright install --with-deps $browser_to_install
+            - name: Test
+              run: bun run test:e2e --project=${{ matrix.browser }}
     build:
           name: JavaScript Build on Ubuntu
           needs: setup
