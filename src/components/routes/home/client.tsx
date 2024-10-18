@@ -28,10 +28,16 @@ const formSchema = z.object({
 
 export const HomeClientPage = () => {
   const [greetMessage, setGreetMessage] = useState("");
-  const { data, isLoading } = rocketApiQueryClient.useQuery(
-    "get",
-    "/getUuidV4",
-  );
+  const { data: responseGetUuidV4, isLoading: getUuidV4IsLoading } =
+    rocketApiQueryClient.useQuery("get", "/getUuidV4");
+  const { data: responseGetCalculator, isLoading: getCalculatorIsLoading } =
+    rocketApiQueryClient.useQuery("get", "/calculator", {
+      params: {
+        query: {
+          expression: "1 + 1",
+        },
+      },
+    });
   const greetApi = generateAppApiInstance("greet");
 
   async function greet(userName: string) {
@@ -87,7 +93,12 @@ export const HomeClientPage = () => {
 
       <p data-testid="greet-message">{greetMessage}</p>
       <p data-testid="rocket-api-uuid-v4">
-        {isLoading ? "Loading..." : (data?.message ?? "")}
+        {getUuidV4IsLoading ? "Loading..." : (responseGetUuidV4?.message ?? "")}
+      </p>
+      <p data-testid="rocket-api-calculator">
+        {getCalculatorIsLoading
+          ? "Loading..."
+          : (responseGetCalculator?.message ?? "")}
       </p>
     </div>
   );
