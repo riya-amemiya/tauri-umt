@@ -3,6 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { range } from "umt/module";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -22,7 +23,7 @@ import { isApp } from "@/utils/isApp";
 import { rocketApiQueryClient } from "@/utils/rocketApiClient";
 
 const formSchema = z.object({
-  expression: z.string().regex(/^[\d()*+./-]+$/i, "Invalid expression"),
+  expression: z.string().regex(/^[\d()+.x÷-]+$/i, "Invalid expression"),
 });
 
 export const HomeClientPage = () => {
@@ -56,7 +57,10 @@ export const HomeClientPage = () => {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    calculator(values.expression);
+    const expression = values.expression
+      .replaceAll("x", "*")
+      .replaceAll("÷", "/");
+    calculator(expression);
   }
 
   useEffect(() => {
@@ -89,9 +93,56 @@ export const HomeClientPage = () => {
               </FormItem>
             )}
           />
-          <Button data-testid="run-calculator-button" type="submit">
-            Run Calculator
-          </Button>
+          <div className="mt-5">
+            <div className="grid grid-cols-12 gap-4">
+              {[
+                ...range(7, 10),
+                "÷",
+                ...range(4, 7),
+                "x",
+                ...range(1, 4),
+                "-",
+                0,
+                ".",
+                "=",
+                "+",
+              ].map((value) => {
+                return typeof value === "number" ? (
+                  <Button
+                    className="col-span-3"
+                    key={String(value)}
+                    onClick={() => {
+                      form.setValue(
+                        "expression",
+                        `${form.getValues("expression")}${value}`,
+                      );
+                    }}
+                    type="button"
+                  >
+                    {value}
+                  </Button>
+                ) : value === "=" ? (
+                  <Button className="col-span-3" key={value} type="submit">
+                    {value}
+                  </Button>
+                ) : (
+                  <Button
+                    className="col-span-3"
+                    key={value}
+                    onClick={() => {
+                      form.setValue(
+                        "expression",
+                        `${form.getValues("expression")}${value}`,
+                      );
+                    }}
+                    type="button"
+                  >
+                    {value}
+                  </Button>
+                );
+              })}
+            </div>
+          </div>
         </form>
       </Form>
 
