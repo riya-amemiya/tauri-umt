@@ -49,6 +49,18 @@ export const HomeClientPage = () => {
     }
   }
 
+  const calculatorInputArrayLine1 = [...range(7, 10), "÷"];
+  const calculatorInputArrayLine2 = [...range(4, 7), "x"];
+  const calculatorInputArrayLine3 = [...range(1, 4), "-"];
+  const calculatorInputArrayLine4 = [0, ".", "=", "+"];
+
+  const calculatorInputArray = [
+    ...calculatorInputArrayLine1,
+    ...calculatorInputArrayLine2,
+    ...calculatorInputArrayLine3,
+    ...calculatorInputArrayLine4,
+  ];
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -95,18 +107,7 @@ export const HomeClientPage = () => {
           />
           <div className="mt-5">
             <div className="grid grid-cols-12 gap-4">
-              {[
-                ...range(7, 10),
-                "÷",
-                ...range(4, 7),
-                "x",
-                ...range(1, 4),
-                "-",
-                0,
-                ".",
-                "=",
-                "+",
-              ].map((value) => {
+              {calculatorInputArray.map((value) => {
                 return typeof value === "number" ? (
                   <Button
                     className="col-span-3"
