@@ -22,7 +22,7 @@ import { isApp } from "@/utils/isApp";
 import { rocketApiQueryClient } from "@/utils/rocketApiClient";
 
 const formSchema = z.object({
-  expression: z.string(),
+  expression: z.string().regex(/^[\d()*+./-]+$/i, "Invalid expression"),
 });
 
 export const HomeClientPage = () => {
@@ -83,7 +83,7 @@ export const HomeClientPage = () => {
                   />
                 </FormControl>
                 <FormDescription data-testid="expression-description">
-                  This is your public display name.
+                  Enter a mathematical expression to calculate
                 </FormDescription>
                 <FormMessage data-testid="expression-error" />
               </FormItem>

@@ -16,7 +16,7 @@ test("typing in the input and clicking the greet button", async ({ page }) => {
 
   const expressionDescription = page.getByTestId("expression-description");
   expect(await expressionDescription.textContent()).toBe(
-    "This is your public display name.",
+    "Enter a mathematical expression to calculate",
   );
 
   const expressionInput = page.getByTestId("expression-input");
@@ -26,6 +26,15 @@ test("typing in the input and clicking the greet button", async ({ page }) => {
   expect(await runCalculatorButton.textContent()).toBe("Run Calculator");
 
   await expressionInput.click();
+  await page.keyboard.type("a");
+
+  await runCalculatorButton.click();
+
+  const expressionError = page.getByTestId("expression-error");
+  expect(await expressionError.textContent()).toBe("Invalid expression");
+
+  await expressionInput.click();
+  await page.keyboard.press("Backspace");
   await page.keyboard.type("1+1");
 
   await runCalculatorButton.click();
