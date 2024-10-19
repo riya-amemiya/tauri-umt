@@ -15,7 +15,7 @@
   },
   "rules": {
     "attr-duplication": true,
-    "attr-value-quotes": false,
+    "attr-value-quotes": true,
     "case-sensitive-attr-name": false,
     "case-sensitive-tag-name": false,
     "character-reference": true,
@@ -24,33 +24,55 @@
     "deprecated-element": true,
     "disallowed-element": [],
     "doctype": "always",
-    "end-tag": false,
+    "end-tag": true,
     "heading-levels": true,
     "id-duplication": true,
-    "ineffective-attr": false,
+    "ineffective-attr": true,
     "invalid-attr": true,
     "label-has-control": false,
-    "landmark-roles": false,
+    "landmark-roles": true,
     "neighbor-popovers": true,
-    "no-ambiguous-navigable-target-names": false,
-    "no-boolean-attr-value": false,
-    "no-consecutive-br": false,
-    "no-default-value": false,
+    "no-ambiguous-navigable-target-names": true,
+    "no-boolean-attr-value": true,
+    "no-consecutive-br": true,
+    "no-default-value": true,
     "no-duplicate-dt": true,
     "no-empty-palpable-content": false,
-    "no-hard-code-id": false,
+    "no-hard-code-id": true,
     "no-orphaned-end-tag": true,
     "no-refer-to-non-existent-id": true,
     "no-use-event-handler-attr": false,
     "permitted-contents": [],
     "placeholder-label-option": true,
-    "require-accessible-name": true,
+    "require-accessible-name": false,
     "require-datetime": true,
     "required-attr": [],
     "required-element": [],
     "required-h1": true,
-    "table-row-column-alignment": false,
-    "use-list": false,
+    "table-row-column-alignment": true,
+    "use-list": true,
     "wai-aria": true
-  }
+  },
+  "pretenders": [
+    {
+      "selector": "Link",
+      "as": "a"
+    },
+    {
+      "selector": "Button",
+      "as": "button"
+    },
+    {
+      "selector": "Image",
+      "as": "img"
+    },
+    {
+      "selector": "Input",
+      "as": "input"
+    },
+    {
+      "selector": "FormLabel",
+      "as": "label"
+    }
+  ]
 }
