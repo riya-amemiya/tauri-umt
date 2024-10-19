@@ -123,7 +123,12 @@ export const HomeClientPage = () => {
                     {value}
                   </Button>
                 ) : value === "=" ? (
-                  <Button className="col-span-3" key={value} type="submit">
+                  <Button
+                    className="col-span-3"
+                    data-testid="run-calculator-button"
+                    key={value}
+                    type="submit"
+                  >
                     {value}
                   </Button>
                 ) : (

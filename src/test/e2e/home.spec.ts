@@ -23,7 +23,7 @@ test("typing in the input and clicking the greet button", async ({ page }) => {
   expect(await expressionInput.getAttribute("placeholder")).toBe("1+1");
 
   const runCalculatorButton = page.getByTestId("run-calculator-button");
-  expect(await runCalculatorButton.textContent()).toBe("Run Calculator");
+  expect(await runCalculatorButton.textContent()).toBe("=");
 
   await expressionInput.click();
   await page.keyboard.type("a");
