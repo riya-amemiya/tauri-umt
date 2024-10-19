@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -16,42 +16,52 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import type { CalculatorResponse } from "@/types/apis/calculatorTypes";
 import { generateAppApiInstance } from "@/utils/generateAppApiInstance";
 import { isApp } from "@/utils/isApp";
 import { rocketApiQueryClient } from "@/utils/rocketApiClient";
 
 const formSchema = z.object({
-  userName: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  expression: z.string(),
 });
 
 export const HomeClientPage = () => {
-  const [greetMessage, setGreetMessage] = useState("");
-  const { data, isLoading } = rocketApiQueryClient.useQuery(
+  const [calculatorMessage, setCalculatorMessage] =
+    useState<CalculatorResponse>([false, ""]);
+  const [isAppStatus, setIsAppStatus] = useState<boolean>(false);
+  const { data, mutate, isPending } = rocketApiQueryClient.useMutation(
     "get",
-    "/getUuidV4",
+    "/calculator",
   );
-  const greetApi = generateAppApiInstance("greet");
-
-  async function greet(userName: string) {
-    if (isApp()) {
-      setGreetMessage(await greetApi({ name: userName }));
+  const calculatorApi = generateAppApiInstance("calculator");
+  async function calculator(expression: string) {
+    if (isAppStatus) {
+      setCalculatorMessage(await calculatorApi({ expression }));
     } else {
-      setGreetMessage("Not running in Tauri.");
+      mutate({
+        params: {
+          query: {
+            expression,
+          },
+        },
+      });
     }
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userName: "",
+      expression: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    greet(values.userName);
+    calculator(values.expression);
   }
+
+  useEffect(() => {
+    setIsAppStatus(isApp());
+  }, []);
 
   return (
     <div className="container">
@@ -59,35 +69,40 @@ export const HomeClientPage = () => {
         <form className="row" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
-            name="userName"
+            name="expression"
             render={({ field }) => (
               <FormItem>
-                <FormLabel data-testid="username-label">Username</FormLabel>
+                <FormLabel data-testid="expression-label">Expression</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="off"
                     data-1p-ignore={true}
-                    data-testid="username-input"
-                    placeholder="shadcn"
+                    data-testid="expression-input"
+                    placeholder="1+1"
                     {...field}
                   />
                 </FormControl>
-                <FormDescription data-testid="username-description">
+                <FormDescription data-testid="expression-description">
                   This is your public display name.
                 </FormDescription>
-                <FormMessage data-testid="username-error" />
+                <FormMessage data-testid="expression-error" />
               </FormItem>
             )}
           />
-          <Button data-testid="greet-button" type="submit">
-            Greet
+          <Button data-testid="run-calculator-button" type="submit">
+            Run Calculator
           </Button>
         </form>
       </Form>
 
-      <p data-testid="greet-message">{greetMessage}</p>
-      <p data-testid="rocket-api-uuid-v4">
-        {isLoading ? "Loading..." : (data?.message ?? "")}
+      <p>
+        {isAppStatus ? (
+          calculatorMessage[1]
+        ) : isPending ? (
+          "Loading..."
+        ) : (
+          <span data-testid="calculator-message">{data?.message ?? ""}</span>
+        )}
       </p>
     </div>
   );

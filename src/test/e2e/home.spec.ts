@@ -1,5 +1,4 @@
 import { test, expect } from "@playwright/test";
-import { version as uuidVersion } from "uuid";
 
 import { getScreenshotPath } from "../utils/getScreenshotPath";
 
@@ -12,44 +11,28 @@ test("typing in the input and clicking the greet button", async ({ page }) => {
   await page.goto("http://localhost:9000/");
   await page.screenshot({ path: getScreenshotPath("home.png") });
 
-  const usernameLabel = page.getByTestId("username-label");
-  expect(await usernameLabel.textContent()).toBe("Username");
+  const expressionLabel = page.getByTestId("expression-label");
+  expect(await expressionLabel.textContent()).toBe("Expression");
 
-  const usernameDescription = page.getByTestId("username-description");
-  expect(await usernameDescription.textContent()).toBe(
+  const expressionDescription = page.getByTestId("expression-description");
+  expect(await expressionDescription.textContent()).toBe(
     "This is your public display name.",
   );
 
-  const usernameInput = page.getByTestId("username-input");
-  expect(await usernameInput.getAttribute("placeholder")).toBe("shadcn");
+  const expressionInput = page.getByTestId("expression-input");
+  expect(await expressionInput.getAttribute("placeholder")).toBe("1+1");
 
-  const greetButton = page.getByTestId("greet-button");
-  expect(await greetButton.textContent()).toBe("Greet");
+  const runCalculatorButton = page.getByTestId("run-calculator-button");
+  expect(await runCalculatorButton.textContent()).toBe("Run Calculator");
 
-  await usernameInput.click();
-  await page.keyboard.type("t");
+  await expressionInput.click();
+  await page.keyboard.type("1+1");
 
-  await greetButton.click();
+  await runCalculatorButton.click();
 
-  const usernameError = page.getByTestId("username-error");
-  expect(await usernameError.textContent()).toBe(
-    "Username must be at least 2 characters.",
-  );
+  await page.waitForSelector("[data-testid=calculator-message]");
 
-  await usernameInput.click();
-  await page.keyboard.type("est");
+  const expressionMessage = page.getByTestId("calculator-message");
 
-  await greetButton.click();
-
-  const greetMessage = page.getByTestId("greet-message");
-
-  expect(await greetMessage.textContent()).toBe("Not running in Tauri.");
-});
-
-test("uuid v4", async ({ page }) => {
-  await page.goto("http://localhost:9000");
-  await page.waitForTimeout(3000);
-  const rocketApiUuidV4 = page.getByTestId("rocket-api-uuid-v4");
-  const rocketApiUuidV4Text = await rocketApiUuidV4.textContent();
-  expect(uuidVersion(rocketApiUuidV4Text || "")).toBe(4);
+  expect(await expressionMessage.textContent()).toBe("2");
 });

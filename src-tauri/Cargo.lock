@@ -1566,6 +1566,20 @@ dependencies = [
 ]
 
 [[package]]
+name = "llvm-sys"
+version = "191.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "893cddf1adf0354b93411e413553dd4daf5c43195d73f1acfa1e394bdd371456"
+dependencies = [
+ "anyhow",
+ "cc",
+ "lazy_static",
+ "libc",
+ "regex-lite",
+ "semver",
+]
+
+[[package]]
 name = "lock_api"
 version = "0.4.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2402,6 +2416,12 @@ dependencies = [
 ]
 
 [[package]]
+name = "regex-lite"
+version = "0.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "53a49587ad06b26609c52e423de037e7f57f20d53535d66e08c695f347df952a"
+
+[[package]]
 name = "regex-syntax"
 version = "0.8.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -3145,6 +3165,7 @@ dependencies = [
 name = "tauri-umt"
 version = "0.1.0"
 dependencies = [
+ "llvm-sys",
  "serde",
  "serde_json",
  "tauri",

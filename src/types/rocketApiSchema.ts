@@ -20,6 +20,22 @@ export interface paths {
     patch?: never;
     trace?: never;
   };
+  "/calculator": {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    get: operations["calculator_index"];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
   "/getUuidV4": {
     parameters: {
       query?: never;
@@ -88,6 +104,15 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
   schemas: {
+    GetCalculatorErrorResult: {
+      error: string;
+      success: boolean;
+    };
+    GetCalculatorSuccessResult: {
+      /** Format: double */
+      message: number;
+      success: boolean;
+    };
     GetUuidV4Result: {
       message: string;
     };
@@ -128,6 +153,37 @@ export interface operations {
         };
         content: {
           "application/json": components["schemas"]["IndexResult"][];
+        };
+      };
+    };
+  };
+  calculator_index: {
+    parameters: {
+      query: {
+        expression: string;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      /** @description Get Calculator result. */
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetCalculatorSuccessResult"];
+        };
+      };
+      /** @description Bad request. */
+      400: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          "application/json": components["schemas"]["GetCalculatorErrorResult"];
         };
       };
     };
