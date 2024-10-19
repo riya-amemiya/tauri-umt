@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { range } from "umt/module";
+import { range } from "umt/module/Array/range";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
