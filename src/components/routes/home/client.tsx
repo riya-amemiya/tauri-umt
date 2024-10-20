@@ -4,9 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { range } from "umt/module/Array/range";
-import { z } from "zod";
+import type { z } from "zod";
 
-import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -18,19 +17,18 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import type { CalculatorResponse } from "@/types/apis/calculatorTypes";
+import { calculatorApiSchema } from "@/types/schema/calculatorApiSchema";
 import { generateAppApiInstance } from "@/utils/generateAppApiInstance";
 import { isApp } from "@/utils/isApp";
 import { rocketApiQueryClient } from "@/utils/rocketApiClient";
 
-const formSchema = z.object({
-  expression: z.string().regex(/^[\d()+.x÷-]+$/i, "Invalid expression"),
-});
+import { CalculatorInputButton } from "./calculatorInputButton";
 
 export const HomeClientPage = () => {
   const [calculatorMessage, setCalculatorMessage] =
     useState<CalculatorResponse>([false, ""]);
   const [isAppStatus, setIsAppStatus] = useState<boolean>(false);
-  const { data, mutate, isPending } = rocketApiQueryClient.useMutation(
+  const { data, error, mutate, isPending } = rocketApiQueryClient.useMutation(
     "get",
     "/calculator",
   );
@@ -49,26 +47,28 @@ export const HomeClientPage = () => {
     }
   }
 
-  const calculatorInputArrayLine1 = [...range(7, 10), "÷"];
-  const calculatorInputArrayLine2 = [...range(4, 7), "x"];
-  const calculatorInputArrayLine3 = [...range(1, 4), "-"];
-  const calculatorInputArrayLine4 = [0, ".", "=", "+"];
+  const calculatorInputArrayLine1 = ["(", ")", "%", "ac"];
+  const calculatorInputArrayLine2 = [...range(7, 10), "÷"];
+  const calculatorInputArrayLine3 = [...range(4, 7), "x"];
+  const calculatorInputArrayLine4 = [...range(1, 4), "-"];
+  const calculatorInputArrayLine5 = [0, ".", "=", "+"];
 
   const calculatorInputArray = [
     ...calculatorInputArrayLine1,
     ...calculatorInputArrayLine2,
     ...calculatorInputArrayLine3,
     ...calculatorInputArrayLine4,
+    ...calculatorInputArrayLine5,
   ];
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof calculatorApiSchema>>({
+    resolver: zodResolver(calculatorApiSchema),
     defaultValues: {
       expression: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  function onSubmit(values: z.infer<typeof calculatorApiSchema>) {
     const expression = values.expression
       .replaceAll("x", "*")
       .replaceAll("÷", "/");
@@ -107,46 +107,13 @@ export const HomeClientPage = () => {
           />
           <div className="mt-5">
             <div className="grid grid-cols-12 gap-4">
-              {calculatorInputArray.map((value) => {
-                return typeof value === "number" ? (
-                  <Button
-                    className="col-span-3"
-                    key={String(value)}
-                    onClick={() => {
-                      form.setValue(
-                        "expression",
-                        `${form.getValues("expression")}${value}`,
-                      );
-                    }}
-                    type="button"
-                  >
-                    {value}
-                  </Button>
-                ) : value === "=" ? (
-                  <Button
-                    className="col-span-3"
-                    data-testid="run-calculator-button"
-                    key={value}
-                    type="submit"
-                  >
-                    {value}
-                  </Button>
-                ) : (
-                  <Button
-                    className="col-span-3"
-                    key={value}
-                    onClick={() => {
-                      form.setValue(
-                        "expression",
-                        `${form.getValues("expression")}${value}`,
-                      );
-                    }}
-                    type="button"
-                  >
-                    {value}
-                  </Button>
-                );
-              })}
+              {calculatorInputArray.map((value) => (
+                <CalculatorInputButton
+                  form={form}
+                  key={String(value)}
+                  value={value}
+                />
+              ))}
             </div>
           </div>
         </form>
@@ -157,8 +124,10 @@ export const HomeClientPage = () => {
           calculatorMessage[1]
         ) : isPending ? (
           "Loading..."
-        ) : (
+        ) : data?.success ? (
           <span data-testid="calculator-message">{data?.message ?? ""}</span>
+        ) : error === null ? null : (
+          error.error
         )}
       </p>
     </div>
