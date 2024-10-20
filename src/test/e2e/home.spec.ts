@@ -33,9 +33,18 @@ test("typing in the input and clicking the greet button", async ({ page }) => {
   const expressionError = page.getByTestId("expression-error");
   expect(await expressionError.textContent()).toBe("Invalid expression");
 
-  await expressionInput.click();
-  await page.keyboard.press("Backspace");
-  await page.keyboard.type("1+1");
+  const acButton = page.getByTestId("calculator-input-button-ac");
+  expect(await acButton.textContent()).toBe("ac");
+
+  await acButton.click();
+
+  const oneButton = page.getByTestId("calculator-input-button-1");
+  await oneButton.click();
+
+  const plusButton = page.getByTestId("calculator-input-button-+");
+  await plusButton.click();
+
+  await oneButton.click();
 
   await runCalculatorButton.click();
 

@@ -27,6 +27,7 @@ export const CalculatorInputButton = ({
       return (
         <Button
           className="col-span-3"
+          data-testid={`calculator-input-button-${value}`}
           onClick={() => {
             form.setValue("expression", "");
           }}
@@ -40,6 +41,7 @@ export const CalculatorInputButton = ({
       return (
         <Button
           className="col-span-3"
+          data-testid={`calculator-input-button-${value}`}
           onClick={() => {
             form.setValue(
               "expression",
