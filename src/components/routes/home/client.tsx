@@ -71,7 +71,8 @@ export const HomeClientPage = () => {
   function onSubmit(values: z.infer<typeof calculatorApiSchema>) {
     const expression = values.expression
       .replaceAll("x", "*")
-      .replaceAll("÷", "/");
+      .replaceAll("÷", "/")
+      .replaceAll("%", "/100");
     calculator(expression);
   }
 
