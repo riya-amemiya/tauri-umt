@@ -1,8 +1,9 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { range } from "umt/module/Array/range";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
@@ -16,48 +17,67 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import type { CalculatorResponse } from "@/types/apis/calculatorTypes";
 import { generateAppApiInstance } from "@/utils/generateAppApiInstance";
 import { isApp } from "@/utils/isApp";
 import { rocketApiQueryClient } from "@/utils/rocketApiClient";
 
 const formSchema = z.object({
-  userName: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  expression: z.string().regex(/^[\d()+.x÷-]+$/i, "Invalid expression"),
 });
 
 export const HomeClientPage = () => {
-  const [greetMessage, setGreetMessage] = useState("");
-  const { data: responseGetUuidV4, isLoading: getUuidV4IsLoading } =
-    rocketApiQueryClient.useQuery("get", "/getUuidV4");
-  const { data: responseGetCalculator, isLoading: getCalculatorIsLoading } =
-    rocketApiQueryClient.useQuery("get", "/calculator", {
-      params: {
-        query: {
-          expression: "1 + 1",
-        },
-      },
-    });
-  const greetApi = generateAppApiInstance("greet");
-
-  async function greet(userName: string) {
-    if (isApp()) {
-      setGreetMessage(await greetApi({ name: userName }));
+  const [calculatorMessage, setCalculatorMessage] =
+    useState<CalculatorResponse>([false, ""]);
+  const [isAppStatus, setIsAppStatus] = useState<boolean>(false);
+  const { data, mutate, isPending } = rocketApiQueryClient.useMutation(
+    "get",
+    "/calculator",
+  );
+  const calculatorApi = generateAppApiInstance("calculator");
+  async function calculator(expression: string) {
+    if (isAppStatus) {
+      setCalculatorMessage(await calculatorApi({ expression }));
     } else {
-      setGreetMessage("Not running in Tauri.");
+      mutate({
+        params: {
+          query: {
+            expression,
+          },
+        },
+      });
     }
   }
+
+  const calculatorInputArrayLine1 = [...range(7, 10), "÷"];
+  const calculatorInputArrayLine2 = [...range(4, 7), "x"];
+  const calculatorInputArrayLine3 = [...range(1, 4), "-"];
+  const calculatorInputArrayLine4 = [0, ".", "=", "+"];
+
+  const calculatorInputArray = [
+    ...calculatorInputArrayLine1,
+    ...calculatorInputArrayLine2,
+    ...calculatorInputArrayLine3,
+    ...calculatorInputArrayLine4,
+  ];
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      userName: "",
+      expression: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    greet(values.userName);
+    const expression = values.expression
+      .replaceAll("x", "*")
+      .replaceAll("÷", "/");
+    calculator(expression);
   }
+
+  useEffect(() => {
+    setIsAppStatus(isApp());
+  }, []);
 
   return (
     <div className="container">
@@ -65,40 +85,81 @@ export const HomeClientPage = () => {
         <form className="row" onSubmit={form.handleSubmit(onSubmit)}>
           <FormField
             control={form.control}
-            name="userName"
+            name="expression"
             render={({ field }) => (
               <FormItem>
-                <FormLabel data-testid="username-label">Username</FormLabel>
+                <FormLabel data-testid="expression-label">Expression</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="off"
                     data-1p-ignore={true}
-                    data-testid="username-input"
-                    placeholder="shadcn"
+                    data-testid="expression-input"
+                    placeholder="1+1"
                     {...field}
                   />
                 </FormControl>
-                <FormDescription data-testid="username-description">
-                  This is your public display name.
+                <FormDescription data-testid="expression-description">
+                  Enter a mathematical expression to calculate
                 </FormDescription>
-                <FormMessage data-testid="username-error" />
+                <FormMessage data-testid="expression-error" />
               </FormItem>
             )}
           />
-          <Button data-testid="greet-button" type="submit">
-            Greet
-          </Button>
+          <div className="mt-5">
+            <div className="grid grid-cols-12 gap-4">
+              {calculatorInputArray.map((value) => {
+                return typeof value === "number" ? (
+                  <Button
+                    className="col-span-3"
+                    key={String(value)}
+                    onClick={() => {
+                      form.setValue(
+                        "expression",
+                        `${form.getValues("expression")}${value}`,
+                      );
+                    }}
+                    type="button"
+                  >
+                    {value}
+                  </Button>
+                ) : value === "=" ? (
+                  <Button
+                    className="col-span-3"
+                    data-testid="run-calculator-button"
+                    key={value}
+                    type="submit"
+                  >
+                    {value}
+                  </Button>
+                ) : (
+                  <Button
+                    className="col-span-3"
+                    key={value}
+                    onClick={() => {
+                      form.setValue(
+                        "expression",
+                        `${form.getValues("expression")}${value}`,
+                      );
+                    }}
+                    type="button"
+                  >
+                    {value}
+                  </Button>
+                );
+              })}
+            </div>
+          </div>
         </form>
       </Form>
 
-      <p data-testid="greet-message">{greetMessage}</p>
-      <p data-testid="rocket-api-uuid-v4">
-        {getUuidV4IsLoading ? "Loading..." : (responseGetUuidV4?.message ?? "")}
-      </p>
-      <p data-testid="rocket-api-calculator">
-        {getCalculatorIsLoading
-          ? "Loading..."
-          : (responseGetCalculator?.message ?? "")}
+      <p>
+        {isAppStatus ? (
+          calculatorMessage[1]
+        ) : isPending ? (
+          "Loading..."
+        ) : (
+          <span data-testid="calculator-message">{data?.message ?? ""}</span>
+        )}
       </p>
     </div>
   );
