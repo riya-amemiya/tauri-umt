@@ -237,21 +237,15 @@ impl Drop for CodeGen {
     }
 }
 
-
 #[tauri::command]
-pub fn calculator(
-    expression: String,
-) -> Result<(bool, f64), (bool, String)>
- {
+pub fn calculator(expression: String) -> Result<(bool, f64), (bool, String)> {
     // 入力された数式を取得
     let input = &expression;
     // パーサーを作成し、数式を解析
     let mut parser = Parser::new(input);
     let expr = match parser.parse() {
         Ok(expr) => expr,
-        Err(err) => {
-            return Err((false, err))
-        }
+        Err(err) => return Err((false, err)),
     };
 
     // コード生成器を作成
