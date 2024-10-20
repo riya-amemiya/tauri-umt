@@ -4,16 +4,16 @@
   "version": "0.1.0",
   "type": "module",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --turbo",
     "build": "next build",
     "build:turbo": "turbo build",
     "start": "next start",
     "tauri": "tauri",
     "format": "biome format . --write",
-    "lint": " next lint --fix && biome check . --write && yarn markuplint",
-    "lint:ci": "next lint && biome ci . && yarn markuplint",
+    "lint": " next lint --fix && biome check . --write && bun run markuplint",
+    "lint:ci": "next lint && biome ci . && bun run markuplint",
     "markuplint": "markuplint \"./src/**/*.{jsx,tsx}\"",
-    "test:web": "yarn test:unit && yarn test:e2e",
+    "test:web": "bun run test:unit && bun run test:e2e",
     "test:unit": "vitest --coverage",
     "test:e2e": "playwright test",
     "storybook": "storybook dev -p 6006",
@@ -29,11 +29,11 @@
     "clsx": "^2.1.1",
     "jotai": "^2.10.0",
     "lucide-react": "^0.452.0",
-    "next": "^15.0.0-rc.0",
+    "next": "15.0.0-rc.1",
     "openapi-fetch": "^0.12.2",
     "openapi-react-query": "^0.2.0",
-    "react": "^19.0.0-rc-ed966dac-20241007",
-    "react-dom": "^19.0.0-rc-ed966dac-20241007",
+    "react": "19.0.0-rc-cd22717c-20241013",
+    "react-dom": "19.0.0-rc-cd22717c-20241013",
     "react-hook-form": "^7.53.0",
     "react-hot-toast": "^2.4.1",
     "tailwind-merge": "^2.5.3",
@@ -60,16 +60,16 @@
     "@storybook/test": "^8.2.9",
     "@tauri-apps/cli": "^2.0.1",
     "@types/node": "^22.7.4",
-    "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.0",
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1",
     "@typescript-eslint/eslint-plugin": "^8.8.0",
     "@typescript-eslint/parser": "^8.8.0",
     "@vitejs/plugin-react": "^4.3.2",
-    "@vitest/browser": "2.1.2",
-    "@vitest/coverage-v8": "2.1.2",
+    "@vitest/browser": "2.1.3",
+    "@vitest/coverage-v8": "2.1.3",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
-    "eslint-config-next": "^14.2.8",
+    "eslint-config-next": "15.0.0-rc.1",
     "eslint-plugin-import": "^2.30.0",
     "eslint-plugin-jest-dom": "^5.4.0",
     "eslint-plugin-security": "^3.0.1",
@@ -86,11 +86,15 @@
     "typescript": "^5.6.2",
     "vite": "^5.4.8",
     "vite-tsconfig-paths": "^5.0.1",
-    "vitest": "^2.1.2"
+    "vitest": "^2.1.3"
   },
   "eslintConfig": {
     "extends": [
       "plugin:storybook/recommended"
     ]
+  },
+  "overrides": {
+    "@types/react": "npm:types-react@19.0.0-rc.1",
+    "@types/react-dom": "npm:types-react-dom@19.0.0-rc.1"
   }
 }

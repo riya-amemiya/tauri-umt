@@ -42,7 +42,7 @@
       "./types"
     ],
     "types": [
-      "node"
+      "node",
     ]
   },
   "include": [

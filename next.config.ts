@@ -1,5 +1,5 @@
-/** @type {import('next').NextConfig} */
-const nextConfig = {
+import type { NextConfig } from "next";
+const nextConfig: NextConfig = {
   output: "export",
   reactStrictMode: true,
   // 画像最適化の設定
@@ -18,9 +18,6 @@ const nextConfig = {
   compiler: {
     // 本番環境ではconsole.logを削除する
     removeConsole: process.env.NODE_ENV === "production",
-  },
-  experimental: {
-    instrumentationHook: true,
   },
 };
 export default nextConfig;

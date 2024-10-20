@@ -14,7 +14,7 @@ export default defineConfig({
     },
   },
   test: {
-    globals: true,
+    globals: false,
     include: [
       "**/src/test/unit/*.{test,spec}.?(c|m)[jt]s?(x)",
       "**/src/test/integration/**/*.{test,spec}.?(c|m)[jt]s?(x)",

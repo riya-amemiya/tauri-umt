@@ -1,5 +1,7 @@
 // isApp.test.ts
 
+import { expect, describe, it } from "vitest";
+
 import { isApp } from "@/utils/isApp";
 
 describe("isApp", () => {
