@@ -15,8 +15,8 @@ export default function RootLayout({
   children: ReactNode;
 }) {
   return (
-    <html lang="ja">
-      <body>
+    <html className="h-full w-full" lang="ja">
+      <body className="h-full w-full flex items-center justify-center">
         <Providers>{children}</Providers>
       </body>
     </html>

@@ -9,10 +9,8 @@ import type { z } from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -84,12 +82,25 @@ export const HomeClientPage = () => {
     <div className="container">
       <Form {...form}>
         <form className="row" onSubmit={form.handleSubmit(onSubmit)}>
+          <p>
+            Result:{" "}
+            {isAppStatus ? (
+              calculatorMessage[1]
+            ) : isPending ? (
+              "Loading..."
+            ) : data?.success ? (
+              <span data-testid="calculator-message">
+                {data?.message ?? ""}
+              </span>
+            ) : error === null ? null : (
+              error.error
+            )}
+          </p>
           <FormField
             control={form.control}
             name="expression"
             render={({ field }) => (
               <FormItem>
-                <FormLabel data-testid="expression-label">Expression</FormLabel>
                 <FormControl>
                   <Input
                     autoComplete="off"
@@ -99,9 +110,7 @@ export const HomeClientPage = () => {
                     {...field}
                   />
                 </FormControl>
-                <FormDescription data-testid="expression-description">
-                  Enter a mathematical expression to calculate
-                </FormDescription>
+
                 <FormMessage data-testid="expression-error" />
               </FormItem>
             )}
@@ -119,18 +128,6 @@ export const HomeClientPage = () => {
           </div>
         </form>
       </Form>
-
-      <p>
-        {isAppStatus ? (
-          calculatorMessage[1]
-        ) : isPending ? (
-          "Loading..."
-        ) : data?.success ? (
-          <span data-testid="calculator-message">{data?.message ?? ""}</span>
-        ) : error === null ? null : (
-          error.error
-        )}
-      </p>
     </div>
   );
 };
