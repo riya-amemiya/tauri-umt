@@ -1,1 +1,1 @@
-export const isApp = () => window.navigator.userAgent.includes("TauriApp");
+export const isApp = () => globalThis.navigator.userAgent.includes("TauriApp");
